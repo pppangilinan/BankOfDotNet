@@ -14,9 +14,23 @@ namespace BankOfDotNet.ConsoleClient
         {
             MainAsync().GetAwaiter().GetResult();
         }
-
+        
         private static async Task MainAsync()
         {
+            // using ResourceOwnerPassword
+            var discoveryResponseRo = await DiscoveryClient.GetAsync("http://localhost:6576");
+
+            if (discoveryResponseRo.IsError) Console.WriteLine(discoveryResponseRo.Error);
+
+            var tokenClientRo = new TokenClient(discoveryResponseRo.TokenEndpoint, "ro.client", "secret");
+            var tokenResponseRo = await tokenClientRo.RequestResourceOwnerPasswordAsync("Manish", "password", "bankOfDotNetApi");
+
+            if (tokenResponseRo.IsError) Console.WriteLine(tokenResponseRo.Error);
+
+            Console.WriteLine(tokenResponseRo.Json);
+            Console.WriteLine("\n\n");
+
+            // using ClientCredentials
             var discoveryResponse = await DiscoveryClient.GetAsync("http://localhost:6576");
 
             if (discoveryResponse.IsError) Console.WriteLine(discoveryResponse.Error);
