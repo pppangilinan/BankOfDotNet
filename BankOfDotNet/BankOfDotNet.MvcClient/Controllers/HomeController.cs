@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using BankOfDotNet.MvcClient.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfDotNet.MvcClient.Controllers
 {
@@ -20,10 +19,22 @@ namespace BankOfDotNet.MvcClient.Controllers
             return View();
         }
 
+        [Authorize]
+        public IActionResult Secure()
+        {
+            return View();
+        }
+
+        public async Task LogOut()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync("oidc");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }
