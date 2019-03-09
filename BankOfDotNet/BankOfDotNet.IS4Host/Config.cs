@@ -89,6 +89,26 @@ namespace BankOfDotNet.IS4Host
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
                     }
+                },
+                // Swagger Client
+                new Client
+                {
+                    ClientId = "swaggerapiui",
+                    ClientName = "Swagger Api UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    RedirectUris =
+                    {
+                        "http://localhost:9266/swagger/oauth2-redirect.html"
+                    },
+                    PostLogoutRedirectUris =
+                    {
+                        "http://localhost:9266/swagger"
+                    },
+                    AllowedScopes =
+                    {
+                        "bankOfDotNetApi"
+                    },
+                    AllowAccessTokensViaBrowser = true
                 }
             };
         }
